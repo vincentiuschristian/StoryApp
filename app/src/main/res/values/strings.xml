@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="input_password">Input Password</string>
+    <string name="input_username">Input Username</string>
+    <string name="add_new_story">Add New Story</string>
+    <string name="description">Description</string>
+</resources>
