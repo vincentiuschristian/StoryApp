@@ -4,4 +4,25 @@
     <string name="input_username">Input Username</string>
     <string name="add_new_story">Add New Story</string>
     <string name="description">Description</string>
+    <string name="logout">Logout</string>
+    <string name="name">Name</string>
+    <string name="setting">Setting</string>
+    <string name="icon_theme">icon theme</string>
+    <string name="Success">Login Success</string>
+    <string name="SuccessMsg">Welcome to StoryApp!</string>
+    <string name="login_image">Login Image</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="register_image">Register Image</string>
+    <string name="welcome">WELCOME</string>
+    <string name="story_image">Story Image</string>
+    <string name="this_is_the_picture_you_will_post">This is the picture you will post</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="post_story">Post Story</string>
+    <string name="icon_translate">icon translate</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="change">change</string>
+    <string name="time">Time</string>
 </resources>

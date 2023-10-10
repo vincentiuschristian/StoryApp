@@ -12,9 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp">
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <ImageView
             android:id="@+id/ivStory"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:contentDescription="@string/story_image"
             android:layout_height="200dp"
             app:riv_corner_radius_bottom_right="16dp"
             app:riv_corner_radius_bottom_left="16dp"
@@ -24,14 +25,26 @@
             app:layout_constraintTop_toTopOf="parent" />
         
         <TextView
-            android:id="@+id/tvDesc"
-            android:text="Description"
+            android:id="@+id/tvName"
+            android:text="@string/name"
             android:padding="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivStory"/>
+
+        <TextView
+            android:id="@+id/tvDesc"
+            android:text="@string/description"
+            android:padding="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvName"/>
 
         
     </androidx.constraintlayout.widget.ConstraintLayout>

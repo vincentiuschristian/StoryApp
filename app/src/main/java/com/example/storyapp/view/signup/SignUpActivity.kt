@@ -1,9 +1,15 @@
 package com.example.storyapp.view.signup
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +17,7 @@ import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.data.ResultState
 import com.example.storyapp.databinding.ActivitySignUpBinding
+import com.example.storyapp.view.login.LoginActivity
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -18,7 +25,6 @@ class SignUpActivity : AppCompatActivity() {
     private val signUpViewModel: SignUpViewModel by viewModels {
         ViewModelFactory.getInstance(applicationContext)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +34,21 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupAction()
+        setupView()
+        playAnimation()
+    }
+
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
     }
 
     private fun setupAction() {
@@ -48,12 +69,32 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 else -> {
                     signUp(name, email, pass)
-                    showAlert("Register Berhasil", "Welcome")
                 }
             }
-
-
         }
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.imageview, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val etName = ObjectAnimator.ofFloat(binding.textInputLayoutUsername, View.ALPHA, 1f).setDuration(200)
+        val etEmail = ObjectAnimator.ofFloat(binding.textInputLayoutEmail, View.ALPHA, 1f).setDuration(200)
+        val etPass = ObjectAnimator.ofFloat(binding.textInputLayoutPass, View.ALPHA, 1f).setDuration(200)
+        val btnLogin = ObjectAnimator.ofFloat(binding.btnSignUp, View.ALPHA, 1f).setDuration(200)
+
+        AnimatorSet().apply {
+            playSequentially(
+                etName,
+                etEmail,
+                etPass,
+                btnLogin
+            )
+            startDelay = 250
+        }.start()
     }
 
     private fun signUp(name: String, email: String, pass: String){
@@ -66,13 +107,15 @@ class SignUpActivity : AppCompatActivity() {
 
                     is ResultState.Success -> {
                         showToast(result.data.message)
-                        Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show()
+                        showAlert("Register Berhasil", "Welcome to Story!"){ _, _ ->
+                            navigate()
+                        }
                         showLoading(false)
                     }
 
                     is ResultState.Error -> {
                         showToast(result.error)
-                        Toast.makeText(this, "Register Gagal", Toast.LENGTH_SHORT).show()
+                        showAlert("Register Gagal", "Error : ${result.error}")
                         showLoading(false)
                     }
                 }
@@ -94,9 +137,14 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-
     private fun showToast(message: String?) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigate(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 }

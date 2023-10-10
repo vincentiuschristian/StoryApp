@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -69,7 +70,8 @@ dependencies {
     // rotasi foto
     implementation("androidx.exifinterface:exifinterface:1.3.6")
 
-
     implementation ("com.makeramen:roundedimageview:2.3.0")
-    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

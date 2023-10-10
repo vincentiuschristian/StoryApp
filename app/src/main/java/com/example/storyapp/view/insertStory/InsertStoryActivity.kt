@@ -1,24 +1,38 @@
 package com.example.storyapp.view.insertStory
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.storyapp.R
+import com.example.storyapp.ViewModelFactory
+import com.example.storyapp.data.ResultState
 import com.example.storyapp.databinding.ActivityInsertStoryBinding
 import com.example.storyapp.util.getImageUri
+import com.example.storyapp.util.reduceFileImage
+import com.example.storyapp.util.uriToFile
+import com.example.storyapp.view.main.MainActivity
 
 class InsertStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInsertStoryBinding
 
     private var currentImageUri: Uri? = null
+
+    private val insertViewModel: InsertViewModel by viewModels {
+        ViewModelFactory.getInstance(applicationContext)
+    }
 
     // cek apakah sudah mendapatkan permission
     private fun allPermissionsGranted() =
@@ -55,11 +69,22 @@ class InsertStoryActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
         }
 
+        setupView()
+
     }
 
-    override fun onResume() {
-        super.onResume()
-        showImage()
+
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
     }
 
     private fun startCamera() {
@@ -90,17 +115,43 @@ class InsertStoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage() {
-        Toast.makeText(this, "Fitur Blom Ada hihi", Toast.LENGTH_SHORT).show()
-    }
-
-
     private fun showImage() {
         currentImageUri?.let {
             Log.d("Image URI", "showImage: $it")
             // menampilkan foto ke imageview
             binding.previewImageView.setImageURI(it)
         }
+    }
+
+    private fun uploadImage(){
+        currentImageUri?.let { uri ->
+            val imageFile = uriToFile(uri, this).reduceFileImage()
+            Log.d("Image File", "showImage: ${imageFile.path}")
+            val description = binding.edtDesc.text.toString()
+
+            insertViewModel.uploadImage(imageFile, description).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is ResultState.Loading -> {
+                            showLoading(true)
+                        }
+
+                        is ResultState.Success -> {
+                            showToast(result.data.message.toString())
+                            showLoading(false)
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                        }
+
+                        is ResultState.Error -> {
+                            showToast(result.error)
+                            showLoading(false)
+                        }
+                    }
+                }
+            }
+            }?: showToast("Masukan Foto")
     }
 
     private fun showLoading(isLoading: Boolean) {

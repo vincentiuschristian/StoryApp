@@ -1,27 +1,27 @@
-package com.example.storyapp.view.welcome
+package com.example.storyapp.view.setting
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.storyapp.R
-import com.example.storyapp.databinding.ActivityWelcomeBinding
-import com.example.storyapp.view.login.LoginActivity
-import com.example.storyapp.view.signup.SignUpActivity
+import com.example.storyapp.databinding.ActivitySettingBinding
 
-class WelcomeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityWelcomeBinding
-
+class SettingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome)
-
-        binding = ActivityWelcomeBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_setting)
+        binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupAction()
+        binding.btnLanguage.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+        }
+
         setupView()
 
     }
@@ -36,16 +36,7 @@ class WelcomeActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.hide()
-    }
-
-    private fun setupAction() {
-        binding.loginButton.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-
-        binding.signupButton.setOnClickListener {
-            startActivity(Intent(this, SignUpActivity::class.java))
-        }
+        supportActionBar?.title = "Story"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }

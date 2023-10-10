@@ -34,21 +34,10 @@ class MyButton : AppCompatButton {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        // Mengubah background dari Button
         background = if (isEnabled) enabledBackground else disabledBackground
-
-        // Mengubah warna text pada button
         setTextColor(txtColor)
-
-        // mengubah ukuran textsize
         textSize = 14f
-
-        // menjadikan object pada button center
         gravity = Gravity.CENTER
-
-        // Mengubah text pada button pada kondisi enable dan disable
-      //  text = if (isEnabled) "Login" else "Login"
     }
 
     private fun init() {
