@@ -58,17 +58,18 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
-            when {
-                email.isEmpty() -> {
-                    binding.textInputLayoutEmail.error = "Masukan Email"
-                }
-                pass.isEmpty() -> {
-                    binding.textInputLayoutPass.error = "Masukan Password"
-                }
-                else -> {
-                    login(email, pass)
-                }
-            }
+            login(email, pass)
+//            when {
+//                email.isEmpty() -> {
+//                    binding.textInputLayoutEmail.error = resources.getString(R.string.eName)
+//                }
+//                pass.isEmpty() -> {
+//                    binding.textInputLayoutPass.error = resources.getString(R.string.ePass)
+//                }
+//                else -> {
+//
+//                }
+//            }
         }
     }
 
@@ -132,11 +133,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun saveToken(token : LoginResponse){
         val email = binding.edtEmail.text.toString()
-        if (token.error){
-            showSnackbar(token.message)
-        } else {
+        val tokenValue = token.loginResult.token
+        if (!tokenValue.isNullOrEmpty()){
             loginViewModel.saveSession(UserModel(email, token.loginResult.token))
             showSnackbar(token.loginResult.toString())
+        } else {
+            showSnackbar(token.message)
         }
     }
 

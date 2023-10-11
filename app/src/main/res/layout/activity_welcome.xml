@@ -7,44 +7,55 @@
     tools:context=".view.welcome.WelcomeActivity">
 
     <TextView
+        android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/welcome"
+        android:layout_marginTop="16dp"
+        android:text="Hello!"
         android:textSize="36sp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/welcome_to_storyapp_nshare_your_story_here"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
+
+
     <com.example.storyapp.cutomview.MyButton
         android:id="@+id/loginButton"
         style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="0dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/color2"
+        android:layout_marginTop="36dp"
         android:maxWidth="200dp"
         android:text="@string/login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal"
         tools:ignore="VisualLintButtonSize" />
 
-    <com.example.storyapp.cutomview.MyButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/signupButton"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="0dp"
+        android:layout_width="120dp"
+        android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/color2"
+        android:backgroundTint="@android:color/transparent"
+        android:textColor="@color/textButtonColor"
         android:maxWidth="200dp"
+        app:strokeWidth="1dp"
         android:text="@string/sign_up"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/guidelineVertical"
-        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton"
         tools:ignore="VisualLintButtonSize" />
 
     <androidx.constraintlayout.widget.Guideline

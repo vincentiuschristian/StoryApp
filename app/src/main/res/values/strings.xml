@@ -14,7 +14,6 @@
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="register_image">Register Image</string>
-    <string name="welcome">WELCOME</string>
     <string name="story_image">Story Image</string>
     <string name="this_is_the_picture_you_will_post">This is the picture you will post</string>
     <string name="camera">Camera</string>
@@ -25,4 +24,13 @@
     <string name="theme">Theme</string>
     <string name="change">change</string>
     <string name="time">Time</string>
+    <string name="eName">Input Name!</string>
+    <string name="eEmail">Input Email!</string>
+    <string name="ePass">Input Password!</string>
+    <string name="invalidEmail">Invalid Email Address</string>
+    <string name="invalidPass">Input minimum 8 character</string>
+    <string name="inputEmail">Email</string>
+    <string name="inputName">Name</string>
+    <string name="inputPass">Password</string>
+    <string name="welcome_to_storyapp_nshare_your_story_here">Welcome to StoryApp\nshare your story here!</string>
 </resources>

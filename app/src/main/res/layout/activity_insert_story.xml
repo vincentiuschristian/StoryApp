@@ -80,8 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"
+            style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
             android:hint="@string/description"
-            android:background="@drawable/rounded_edittext"
             android:inputType="textMultiLine"
             android:textColorHint="#546E7A"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />

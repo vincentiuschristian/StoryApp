@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.data.ResultState
+import com.example.storyapp.data.pref.UserPreference
+import com.example.storyapp.data.pref.dataStore
 import com.example.storyapp.data.response.ListStoryItem
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.view.adapter.StoryAdapter
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
+
 
     private lateinit var binding: ActivityMainBinding
 
@@ -40,8 +43,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvItem.layoutManager = layoutManager
         binding.rvItem.setHasFixedSize(true)
 
-        setupView()
         getSession()
+        setupView()
 
         binding.apply {
             refresh.setOnRefreshListener {
@@ -58,8 +61,20 @@ class MainActivity : AppCompatActivity() {
         getStories()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getSession()
+    }
+
     private fun getSession(){
+        val users = UserPreference.getInstance(applicationContext.dataStore)
+        val token = users.getUser()
+
         viewModel.getSession().observe(this) { user ->
+//            if (!user.isLogin && token.toString().isEmpty()){
+//                startActivity(Intent(this, WelcomeActivity::class.java))
+//                finish()
+//            }
             if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
@@ -81,9 +96,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpAction(data: List<ListStoryItem>?) {
-        val adapter = StoryAdapter()
-        adapter.submitList(data)
-        binding.rvItem.adapter = adapter
+        if (data.isNullOrEmpty()){
+            binding.tvEmptyStory.visibility = View.VISIBLE
+        }else {
+            binding.tvEmptyStory.visibility = View.GONE
+            val adapter = StoryAdapter()
+            adapter.submitList(data)
+            binding.rvItem.adapter = adapter
+        }
     }
 
 

@@ -30,7 +30,7 @@ class EmailEditText : AppCompatEditText {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        hint = "Masukkan Email"
+        hint = resources.getString(R.string.inputEmail)
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 
@@ -42,10 +42,10 @@ class EmailEditText : AppCompatEditText {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isBlank()) {
-                    error = "Input Username"
+                    error = resources.getString(R.string.eEmail)
                 } else {
                     if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()){
-                        error = "Invalid Email Address"
+                        error = resources.getString(R.string.invalidEmail)
                     }
                 }
             }
