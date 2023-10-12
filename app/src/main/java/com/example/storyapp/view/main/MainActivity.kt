@@ -10,13 +10,10 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.data.ResultState
-import com.example.storyapp.data.pref.UserPreference
-import com.example.storyapp.data.pref.dataStore
 import com.example.storyapp.data.response.ListStoryItem
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.view.adapter.StoryAdapter
@@ -24,7 +21,6 @@ import com.example.storyapp.view.insertStory.InsertStoryActivity
 import com.example.storyapp.view.setting.SettingActivity
 import com.example.storyapp.view.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels {
@@ -124,12 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_Logout -> {
-            val userPreference = UserPreference.getInstance(dataStore)
-            lifecycleScope.launch {
-                userPreference.logout()
-                startActivity(Intent(applicationContext, WelcomeActivity::class.java))
-                finish()
-            }
+            viewModel.logout()
             true
         }
 

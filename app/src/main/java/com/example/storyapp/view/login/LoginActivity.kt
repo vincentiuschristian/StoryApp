@@ -141,7 +141,6 @@ class LoginActivity : AppCompatActivity() {
         val tokenValue = token.loginResult.token
         if (tokenValue.isNotEmpty()) {
             loginViewModel.saveSession(UserModel(token.loginResult.token))
-            showSnackbar(token.loginResult.toString())
         } else {
             showSnackbar(token.message)
         }

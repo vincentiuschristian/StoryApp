@@ -25,9 +25,7 @@ class MyButton : AppCompatButton {
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
+        context, attrs, defStyleAttr
     ) {
         init()
     }
