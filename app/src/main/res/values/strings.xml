@@ -9,7 +9,11 @@
     <string name="setting">Setting</string>
     <string name="icon_theme">icon theme</string>
     <string name="Success">Login Success</string>
+    <string name="SuccessRegister">Register Success</string>
+    <string name="register_failed">Register Failed</string>
     <string name="SuccessMsg">Welcome to StoryApp!</string>
+    <string name="FailedMsg">Failed Register: %1$s</string>
+    <string name="RegisMsg">Welcome to StoryApp!\nLogin to your Account Now</string>
     <string name="login_image">Login Image</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
@@ -22,7 +26,7 @@
     <string name="icon_translate">icon translate</string>
     <string name="language">Language</string>
     <string name="theme">Theme</string>
-    <string name="change">change</string>
+    <string name="change">choose</string>
     <string name="time">Time</string>
     <string name="eName">Input Name!</string>
     <string name="eEmail">Input Email!</string>
@@ -32,5 +36,17 @@
     <string name="inputEmail">Email</string>
     <string name="inputName">Name</string>
     <string name="inputPass">Password</string>
-    <string name="welcome_to_storyapp_nshare_your_story_here">Welcome to StoryApp\nshare your story here!</string>
+    <string name="welcome_to_storyapp_nshare_your_story_here">Welcome to StoryApp\nShare your story here!</string>
+    <string name="dateFormat">Uploaded on %1$s</string>
+    <string name="hello">Hello!</string>
+    <string name="doesn_t_have_an_account">Doesn\'t have an account?</string>
+    <string name="story">Story</string>
+    <string name="appwidget_text" translatable="false">STORY APP</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="app_widget_description" translatable="false">This is an app widget description</string>
+    <string name="empty_text" translatable="false">NO DATA</string>
+    <string name="detail">Detail Story</string>
+    <string name="login_msg" translatable="false">Welcome to StoryApp\\nLet\'s Write Your Story!</string>
+    <string name="insertPhotoWarning">Insert photo!</string>
+    <string name="empty_story">Empty Story</string>
 </resources>

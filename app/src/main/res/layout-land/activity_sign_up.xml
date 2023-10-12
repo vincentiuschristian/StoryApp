@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".view.login.LoginActivity">
 
-    <TextView
-        style="@style/MaterialAlertDialog.Material3.Title.Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/login"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageview" />
-
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressIndicator"
         android:layout_width="match_parent"
@@ -31,40 +20,56 @@
         android:id="@+id/imageview"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
         android:contentDescription="@string/login_image"
         android:src="@drawable/login_vector"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineHorizontal"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/sign_up"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageview"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/background_shape"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutUsername"
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal" />
+        app:layout_constraintStart_toEndOf="@+id/imageview"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:startIconDrawable="@drawable/user"
+        tools:alpha="100">
+
+        <com.example.storyapp.cutomview.NameEditText
+            android:id="@+id/edtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/input_username"
+            android:inputType="text"
+            tools:ignore="EditableContentDescCheck,DuplicateSpeakableTextCheck,VisualLintTextFieldSize" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutEmail"
-        android:layout_width="match_parent"
+        android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
         android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal"
+        app:layout_constraintStart_toEndOf="@+id/imageview"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutUsername"
         app:startIconDrawable="@drawable/mail"
         tools:alpha="100">
 
@@ -81,13 +86,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutPass"
-        android:layout_width="match_parent"
+        android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
         android:alpha="0"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageview"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutEmail"
         app:startIconDrawable="@drawable/lock"
         tools:alpha="100">
@@ -99,53 +104,22 @@
             android:contentDescription="@string/input_password"
             android:ems="10"
             android:inputType="textPassword"
-            android:minHeight="48dp"
             tools:ignore="EditableContentDescCheck,VisualLintTextFieldSize" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.example.storyapp.cutomview.MyButton
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
+        android:id="@+id/btnSignUp"
+        android:layout_width="450dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:alpha="0"
-        android:text="@string/login"
-        android:textAlignment="center"
+        android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageview"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPass"
         tools:alpha="100"
         tools:ignore="VisualLintButtonSize" />
 
-    <TextView
-        android:id="@+id/textSignUp"
-        style="@style/MaterialAlertDialog.Material3.Body.Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:alpha="0"
-        android:text="@string/doesn_t_have_an_account"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        tools:alpha="100" />
-
-
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:alpha="0"
-        android:backgroundTint="@android:color/transparent"
-        android:text="@string/sign_up"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSignUp"
-        tools:alpha="100"
-        tools:ignore="VisualLintButtonSize,TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

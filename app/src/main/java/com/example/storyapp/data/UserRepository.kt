@@ -12,6 +12,7 @@ import com.example.storyapp.data.response.RegisterResponse
 import com.example.storyapp.data.response.StoryResponse
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -58,9 +59,10 @@ class UserRepository private constructor(
         liveData {
             emit(ResultState.Loading)
             try {
-                val response = apiService.getStories()
+                val sessionToken = "Bearer ${userPreference.getSession().first().token}"
+                val response = apiService.getStories(sessionToken)
                 emit(ResultState.Success(response))
-            }catch (e: HttpException) {
+            } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
                 emit(ResultState.Error(errorResponse.message.toString()))
@@ -77,20 +79,9 @@ class UserRepository private constructor(
             requestImageFile
         )
         try {
-            val successResponse = apiService.uploadImage(multipartBody, requestBody)
+            val sessionToken = "Bearer ${userPreference.getSession().first().token}"
+            val successResponse = apiService.uploadImage(sessionToken, multipartBody, requestBody)
             emit(ResultState.Success(successResponse))
-        } catch (e: HttpException) {
-            val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
-            emit(ResultState.Error(errorResponse.message.toString()))
-        }
-    }
-
-    fun getDetailStory(id: String): LiveData<ResultState<StoryResponse>> = liveData {
-        emit(ResultState.Loading)
-        try {
-            val response = apiService.getDetail(id)
-            emit(ResultState.Success(response))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
@@ -104,10 +95,6 @@ class UserRepository private constructor(
 
     fun getSession(): Flow<UserModel> {
         return userPreference.getSession()
-    }
-
-    suspend fun logout() {
-        userPreference.logout()
     }
 
     companion object {

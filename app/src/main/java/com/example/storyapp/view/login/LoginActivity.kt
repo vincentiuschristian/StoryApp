@@ -19,11 +19,12 @@ import com.example.storyapp.data.pref.UserModel
 import com.example.storyapp.data.response.LoginResponse
 import com.example.storyapp.databinding.ActivityLoginBinding
 import com.example.storyapp.view.main.MainActivity
+import com.example.storyapp.view.signup.SignUpActivity
 import com.google.android.material.snackbar.Snackbar
 
 class LoginActivity : AppCompatActivity() {
     private val loginViewModel: LoginViewModel by viewModels {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(applicationContext)
     }
 
     private lateinit var binding: ActivityLoginBinding
@@ -35,9 +36,13 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupAction()
+        setupLogin()
         setupView()
         playAnimation()
+
+        binding.btnSignUp.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java))
+        }
 
     }
 
@@ -54,22 +59,11 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun setupAction() {
+    private fun setupLogin() {
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
             login(email, pass)
-//            when {
-//                email.isEmpty() -> {
-//                    binding.textInputLayoutEmail.error = resources.getString(R.string.eName)
-//                }
-//                pass.isEmpty() -> {
-//                    binding.textInputLayoutPass.error = resources.getString(R.string.ePass)
-//                }
-//                else -> {
-//
-//                }
-//            }
         }
     }
 
@@ -80,31 +74,40 @@ class LoginActivity : AppCompatActivity() {
             repeatMode = ObjectAnimator.REVERSE
         }.start()
 
-        val etEmail = ObjectAnimator.ofFloat(binding.textInputLayoutEmail, View.ALPHA, 1f).setDuration(100)
-        val etPass = ObjectAnimator.ofFloat(binding.textInputLayoutPass, View.ALPHA, 1f).setDuration(100)
-        val btnLogin = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(100)
+        val etEmail =
+            ObjectAnimator.ofFloat(binding.textInputLayoutEmail, View.ALPHA, 1f).setDuration(150)
+        val etPass =
+            ObjectAnimator.ofFloat(binding.textInputLayoutPass, View.ALPHA, 1f).setDuration(150)
+        val btnLogin = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(150)
+        val textSignUp = ObjectAnimator.ofFloat(binding.textSignUp, View.ALPHA, 1f).setDuration(150)
+        val btnSignUp = ObjectAnimator.ofFloat(binding.btnSignUp, View.ALPHA, 1f).setDuration(150)
 
         AnimatorSet().apply {
             playSequentially(
                 etEmail,
                 etPass,
-                btnLogin
+                btnLogin,
+                textSignUp,
+                btnSignUp
             )
             startDelay = 250
         }.start()
     }
 
-    private fun login(email: String, pass: String){
-        loginViewModel.loginUser(email, pass).observe(this){result ->
-            if (result != null){
-                when(result){
+    private fun login(email: String, pass: String) {
+        loginViewModel.loginUser(email, pass).observe(this) { result ->
+            if (result != null) {
+                when (result) {
                     is ResultState.Loading -> {
                         showLoading(true)
                     }
 
                     is ResultState.Success -> {
                         showSnackbar(result.data.message)
-                        showAlert(resources.getString(R.string.Success), resources.getString(R.string.SuccessMsg)){ _, _ ->
+                        showAlert(
+                            resources.getString(R.string.Success),
+                            resources.getString(R.string.SuccessMsg)
+                        ) { _, _ ->
                             navigate()
                         }
                         saveToken(result.data)
@@ -120,8 +123,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun showAlert(title: String, message: String, onPositiveClick: ((dialog: DialogInterface, which: Int) -> Unit)? = null) {
+    private fun showAlert(
+        title: String,
+        message: String,
+        onPositiveClick: ((dialog: DialogInterface, which: Int) -> Unit)? = null
+    ) {
         AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
@@ -131,18 +137,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveToken(token : LoginResponse){
-        val email = binding.edtEmail.text.toString()
+    private fun saveToken(token: LoginResponse) {
         val tokenValue = token.loginResult.token
-        if (!tokenValue.isNullOrEmpty()){
-            loginViewModel.saveSession(UserModel(email, token.loginResult.token))
+        if (tokenValue.isNotEmpty()) {
+            loginViewModel.saveSession(UserModel(token.loginResult.token))
             showSnackbar(token.loginResult.toString())
         } else {
             showSnackbar(token.message)
         }
     }
 
-    private fun showSnackbar(message: String?){
+    private fun showSnackbar(message: String?) {
         Snackbar.make(binding.root, message!!, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -150,9 +155,8 @@ class LoginActivity : AppCompatActivity() {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun navigate(){
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+    private fun navigate() {
+        startActivity(Intent(applicationContext, MainActivity::class.java))
         finish()
     }
 }

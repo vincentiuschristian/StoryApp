@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.storyapp.R
@@ -18,6 +17,7 @@ import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.data.ResultState
 import com.example.storyapp.databinding.ActivitySignUpBinding
 import com.example.storyapp.view.login.LoginActivity
+import com.google.android.material.snackbar.Snackbar
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -33,7 +33,7 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupAction()
+        setupSignUp()
         setupView()
         playAnimation()
     }
@@ -51,26 +51,12 @@ class SignUpActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun setupAction() {
+    private fun setupSignUp() {
         binding.btnSignUp.setOnClickListener {
             val name = binding.edtName.text.toString()
             val email = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
-
-            when {
-                name.isEmpty() -> {
-                    binding.textInputLayoutUsername.error = "Masukan Nama"
-                }
-                email.isEmpty() -> {
-                    binding.textInputLayoutEmail.error = "Masukan Email"
-                }
-                pass.isEmpty() -> {
-                    binding.textInputLayoutPass.error = "Masukan Password"
-                }
-                else -> {
-                    signUp(name, email, pass)
-                }
-            }
+            signUp(name, email, pass)
         }
     }
 
@@ -106,25 +92,20 @@ class SignUpActivity : AppCompatActivity() {
                     }
 
                     is ResultState.Success -> {
-                        showToast(result.data.message)
-                        showAlert("Register Berhasil", "Welcome to Story!"){ _, _ ->
+                        showSnackbar(result.data.message)
+                        showAlert(resources.getString(R.string.SuccessRegister), resources.getString(R.string.RegisMsg)){ _, _ ->
                             navigate()
                         }
                         showLoading(false)
                     }
 
                     is ResultState.Error -> {
-                        showToast(result.error)
-                        showAlert("Register Gagal", "Error : ${result.error}")
+                        showAlert(resources.getString(R.string.register_failed), resources.getString(R.string.FailedMsg, result.error))
                         showLoading(false)
                     }
                 }
             }
         }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showAlert(title: String, message: String, onPositiveClick: ((dialog: DialogInterface, which: Int) -> Unit)? = null) {
@@ -137,14 +118,16 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showSnackbar(message: String?) {
+        Snackbar.make(binding.root, message!!, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun navigate(){
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(applicationContext, LoginActivity::class.java))
         finish()
     }
-
 }

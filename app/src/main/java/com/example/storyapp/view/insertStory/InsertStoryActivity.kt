@@ -24,6 +24,7 @@ import com.example.storyapp.util.getImageUri
 import com.example.storyapp.util.reduceFileImage
 import com.example.storyapp.util.uriToFile
 import com.example.storyapp.view.main.MainActivity
+import com.google.android.material.snackbar.Snackbar
 
 class InsertStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInsertStoryBinding
@@ -34,14 +35,12 @@ class InsertStoryActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(applicationContext)
     }
 
-    // cek apakah sudah mendapatkan permission
     private fun allPermissionsGranted() =
         ContextCompat.checkSelfPermission(
             this,
             REQUIRED_PERMISSION
         ) == PackageManager.PERMISSION_GRANTED
 
-    // untuk menanggapi launcher setelah muncul pop up permission
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -60,19 +59,16 @@ class InsertStoryActivity : AppCompatActivity() {
         binding = ActivityInsertStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnGallery.setOnClickListener{ startGallery() }
-        binding.btnCamera.setOnClickListener{ startCamera() }
-        binding.btnUpload.setOnClickListener{ uploadImage() }
+        binding.btnGallery.setOnClickListener { startGallery() }
+        binding.btnCamera.setOnClickListener { startCamera() }
+        binding.btnUpload.setOnClickListener { uploadImage() }
 
         if (!allPermissionsGranted()) {
-            // untuk melakukan izin dari requestPermissionLauncher
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
         }
 
         setupView()
-
     }
-
 
     private fun setupView() {
         @Suppress("DEPRECATION")
@@ -118,12 +114,11 @@ class InsertStoryActivity : AppCompatActivity() {
     private fun showImage() {
         currentImageUri?.let {
             Log.d("Image URI", "showImage: $it")
-            // menampilkan foto ke imageview
             binding.previewImageView.setImageURI(it)
         }
     }
 
-    private fun uploadImage(){
+    private fun uploadImage() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
@@ -137,28 +132,30 @@ class InsertStoryActivity : AppCompatActivity() {
                         }
 
                         is ResultState.Success -> {
-                            showToast(result.data.message.toString())
+                            showSnackbar(result.data.message.toString())
                             showLoading(false)
                             val intent = Intent(this, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(intent)
                         }
 
                         is ResultState.Error -> {
-                            showToast(result.error)
+                            showSnackbar(result.error)
                             showLoading(false)
                         }
                     }
                 }
             }
-            }?: showToast("Masukan Foto")
+        } ?: showSnackbar(resources.getString(R.string.insertPhotoWarning))
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+    private fun showSnackbar(message: String?) {
+        Snackbar.make(binding.root, message!!, Snackbar.LENGTH_SHORT).show()
     }
 
     companion object {

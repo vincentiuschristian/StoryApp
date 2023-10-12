@@ -36,7 +36,7 @@ class SettingActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.title = "Story"
+        supportActionBar?.title = resources.getString(R.string.setting)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }

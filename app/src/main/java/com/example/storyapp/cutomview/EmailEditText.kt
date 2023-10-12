@@ -38,13 +38,14 @@ class EmailEditText : AppCompatEditText {
         setBackgroundResource(R.drawable.rounded_edittext)
 
         addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                Unit
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isBlank()) {
                     error = resources.getString(R.string.eEmail)
                 } else {
-                    if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()){
+                    if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
                         error = resources.getString(R.string.invalidEmail)
                     }
                 }

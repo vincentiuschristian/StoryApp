@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".view.setting.SettingActivity">
 
-
     <TextView
         android:id="@+id/textViewLanguage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/language"
         app:layout_constraintStart_toEndOf="@id/iconTranslate"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,47 +29,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
-
-    <TextView
-        android:id="@+id/textViewTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/theme"
-        app:layout_constraintStart_toEndOf="@id/iconTheme"
-        app:layout_constraintTop_toBottomOf="@id/textViewLanguage" />
-
-
-    <ImageView
-        android:id="@+id/iconTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
-        android:clickable="true"
-        android:contentDescription="@string/icon_theme"
-        android:src="@drawable/moon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iconTranslate"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <Button
+    <com.example.storyapp.cutomview.MyButton
         android:id="@+id/btnLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="36dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/change"
+        android:contentDescription="@string/change"
+        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLanguage" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

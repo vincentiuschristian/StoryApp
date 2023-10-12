@@ -10,6 +10,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
@@ -23,12 +24,12 @@ import com.example.storyapp.view.insertStory.InsertStoryActivity
 import com.example.storyapp.view.setting.SettingActivity
 import com.example.storyapp.view.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(applicationContext)
     }
-
 
     private lateinit var binding: ActivityMainBinding
 
@@ -43,8 +44,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvItem.layoutManager = layoutManager
         binding.rvItem.setHasFixedSize(true)
 
-        getSession()
         setupView()
+        getSession()
 
         binding.apply {
             refresh.setOnRefreshListener {
@@ -54,29 +55,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fabAddStory.setOnClickListener {
-            val intent = Intent(this, InsertStoryActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(applicationContext, InsertStoryActivity::class.java))
         }
 
         getStories()
     }
 
-    override fun onResume() {
-        super.onResume()
-        getSession()
-    }
-
-    private fun getSession(){
-        val users = UserPreference.getInstance(applicationContext.dataStore)
-        val token = users.getUser()
-
+    private fun getSession() {
         viewModel.getSession().observe(this) { user ->
-//            if (!user.isLogin && token.toString().isEmpty()){
-//                startActivity(Intent(this, WelcomeActivity::class.java))
-//                finish()
-//            }
             if (!user.isLogin) {
-                startActivity(Intent(this, WelcomeActivity::class.java))
+                startActivity(Intent(applicationContext, WelcomeActivity::class.java))
                 finish()
             }
         }
@@ -92,20 +80,8 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.title = "Story"
+        supportActionBar?.title = resources.getString(R.string.story)
     }
-
-    private fun setUpAction(data: List<ListStoryItem>?) {
-        if (data.isNullOrEmpty()){
-            binding.tvEmptyStory.visibility = View.VISIBLE
-        }else {
-            binding.tvEmptyStory.visibility = View.GONE
-            val adapter = StoryAdapter()
-            adapter.submitList(data)
-            binding.rvItem.adapter = adapter
-        }
-    }
-
 
     private fun getStories() {
         viewModel.getAllStories().observe(this) { result ->
@@ -116,9 +92,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     is ResultState.Success -> {
-                        showSnackbar(result.data.message)
                         showLoading(false)
-                        setUpAction(result.data.listStory)
+                        setData(result.data.listStory)
+                        showSnackbar(result.data.message)
                     }
 
                     is ResultState.Error -> {
@@ -130,6 +106,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setData(data: List<ListStoryItem>?) {
+        if (data.isNullOrEmpty()) {
+            binding.tvEmptyStory.visibility = View.VISIBLE
+        } else {
+            binding.tvEmptyStory.visibility = View.GONE
+            val adapter = StoryAdapter()
+            adapter.submitList(data)
+            binding.rvItem.adapter = adapter
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -137,20 +124,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_Logout -> {
-            viewModel.logout()
+            val userPreference = UserPreference.getInstance(dataStore)
+            lifecycleScope.launch {
+                userPreference.logout()
+                startActivity(Intent(applicationContext, WelcomeActivity::class.java))
+                finish()
+            }
             true
         }
 
         R.id.menu_setting -> {
-            val intentSetting = Intent(this, SettingActivity::class.java)
-            startActivity(intentSetting)
+            startActivity(Intent(applicationContext, SettingActivity::class.java))
             true
         }
 
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun showSnackbar(message: String?){
+    private fun showSnackbar(message: String?) {
         val snackBar = Snackbar.make(binding.root, message!!, Snackbar.LENGTH_SHORT)
         snackBar.show()
     }

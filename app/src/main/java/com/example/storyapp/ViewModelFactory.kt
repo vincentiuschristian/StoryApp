@@ -10,33 +10,24 @@ import com.example.storyapp.view.login.LoginViewModel
 import com.example.storyapp.view.main.MainViewModel
 import com.example.storyapp.view.signup.SignUpViewModel
 
-class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val repository: UserRepository) :
+    ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return when {
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(SignUpViewModel::class.java) -> {
-                SignUpViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(InsertViewModel::class.java) -> {
-                InsertViewModel(repository) as T
-            }
-            else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-        }
-    }
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = when (modelClass) {
+
+        MainViewModel::class.java -> MainViewModel(repository)
+        LoginViewModel::class.java -> LoginViewModel(repository)
+        SignUpViewModel::class.java -> SignUpViewModel(repository)
+        InsertViewModel::class.java -> InsertViewModel(repository)
+
+        else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+    } as T
 
     companion object {
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
+
         @JvmStatic
         fun getInstance(context: Context): ViewModelFactory {
             if (INSTANCE == null) {

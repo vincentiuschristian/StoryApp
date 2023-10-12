@@ -10,11 +10,6 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun loginUser(email: String, password: String) = repository.loginUser(email, password)
 
-//    fun saveSession(user: UserModel) {
-//        viewModelScope.launch {
-//            repository.saveSession(user)
-//        }
-//    }
     fun saveSession(user: UserModel) {
         viewModelScope.launch {
             repository.saveSession(user)

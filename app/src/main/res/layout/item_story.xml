@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardElevation="1dp"
-    app:cardCornerRadius="8dp">
-    
+    app:cardCornerRadius="8dp"
+    app:cardElevation="1dp">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,38 +15,44 @@
         <ImageView
             android:id="@+id/ivStory"
             android:layout_width="0dp"
-            android:contentDescription="@string/story_image"
             android:layout_height="200dp"
-            app:riv_corner_radius_bottom_right="16dp"
-            app:riv_corner_radius_bottom_left="16dp"
+            android:contentDescription="@string/story_image"
             android:src="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius_bottom_left="16dp"
+            app:riv_corner_radius_bottom_right="16dp" />
+
         <TextView
             android:id="@+id/tvName"
-            android:text="@string/name"
-            android:padding="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp"
+            android:text="@string/name"
+            style="@style/TextAppearance.Material3.TitleMedium"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivStory"/>
+            app:layout_constraintTop_toBottomOf="@id/ivStory" />
 
         <TextView
             android:id="@+id/tvDesc"
-            android:text="@string/description"
-            android:padding="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:text="@string/description"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvName"/>
+            app:layout_constraintTop_toBottomOf="@id/tvName" />
 
-        
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
