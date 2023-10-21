@@ -3,26 +3,25 @@ package com.example.storyapp.view.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.storyapp.data.response.ListStoryItem
+import com.example.storyapp.data.paging.database.StoryEntity
 import com.example.storyapp.databinding.ItemStoryBinding
 import com.example.storyapp.view.detailStory.DetailStoryActivity
 
-class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter : PagingDataAdapter<StoryEntity, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     inner class MyViewHolder(private val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ListStoryItem) {
+        fun bind(data: StoryEntity) {
             binding.apply {
                 tvName.text = data.name
                 tvDesc.text = data.description
-                Glide.with(itemView)
+                Glide.with(itemView.context)
                     .load(data.photoUrl)
                     .into(ivStory)
-                    .clearOnDetach()
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailStoryActivity::class.java)
@@ -40,18 +39,20 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val story = getItem(position)
-        holder.bind(story)
+        if (story != null) {
+            holder.bind(story)
+        }
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
-            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryEntity>() {
+            override fun areItemsTheSame(oldItem: StoryEntity, newItem: StoryEntity): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: ListStoryItem,
-                newItem: ListStoryItem
+                oldItem: StoryEntity,
+                newItem: StoryEntity
             ): Boolean {
                 return oldItem == newItem
             }

@@ -10,7 +10,6 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.databinding.ActivityWelcomeBinding
 import com.example.storyapp.view.login.LoginActivity
@@ -19,7 +18,9 @@ import com.example.storyapp.view.main.MainViewModel
 import com.example.storyapp.view.signup.SignUpActivity
 
 class WelcomeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityWelcomeBinding
+    private val binding: ActivityWelcomeBinding by lazy {
+        ActivityWelcomeBinding.inflate(layoutInflater)
+    }
 
     private val mainViewModel: MainViewModel by viewModels {
         ViewModelFactory.getInstance(applicationContext)
@@ -27,9 +28,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome)
-
-        binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupButton()

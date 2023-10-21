@@ -3,7 +3,15 @@ package com.example.storyapp.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.example.storyapp.data.api.ApiService
+import com.example.storyapp.data.paging.data.StoryRemoteMediator
+import com.example.storyapp.data.paging.database.StoryDatabase
+import com.example.storyapp.data.paging.database.StoryEntity
 import com.example.storyapp.data.pref.UserModel
 import com.example.storyapp.data.pref.UserPreference
 import com.example.storyapp.data.response.ErrorResponse
@@ -22,7 +30,8 @@ import java.io.File
 
 class UserRepository private constructor(
     private val apiService: ApiService,
-    private val userPreference: UserPreference
+    private val userPreference: UserPreference,
+    private val storyDatabase: StoryDatabase
 ) {
 
     fun registerUser(
@@ -55,23 +64,24 @@ class UserRepository private constructor(
             }
         }
 
-    fun getStories(): LiveData<ResultState<StoryResponse>> =
-        liveData {
-            emit(ResultState.Loading)
-            try {
-                val sessionToken = "Bearer ${userPreference.getSession().first().token}"
-                val response = apiService.getStories(sessionToken)
-                emit(ResultState.Success(response))
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
-                emit(ResultState.Error(errorResponse.message.toString()))
+    @ExperimentalPagingApi
+    fun getStory(): LiveData<PagingData<StoryEntity>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiService, userPreference),
+            pagingSourceFactory = {
+                storyDatabase.storyDao().getAllStory()
             }
-        }
+        ).liveData
+    }
 
-    fun uploadImage(imageFile: File, description: String) = liveData {
+    fun uploadStory(imageFile: File, description: String, lat: Float?, long: Float?) = liveData {
         emit(ResultState.Loading)
-        val requestBody = description.toRequestBody("text/plain".toMediaType())
+        val requestBodyDesc = description.toRequestBody("text/plain".toMediaType())
+        val requestBodyLat = lat.toString().toRequestBody("text/plain".toMediaType())
+        val requestBodyLong = long.toString().toRequestBody("text/plain".toMediaType())
         val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
             "photo",
@@ -80,7 +90,7 @@ class UserRepository private constructor(
         )
         try {
             val sessionToken = "Bearer ${userPreference.getSession().first().token}"
-            val successResponse = apiService.uploadImage(sessionToken, multipartBody, requestBody)
+            val successResponse = apiService.uploadStory(sessionToken, multipartBody, requestBodyDesc, lat, long)
             emit(ResultState.Success(successResponse))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
@@ -88,6 +98,20 @@ class UserRepository private constructor(
             emit(ResultState.Error(errorResponse.message.toString()))
         }
     }
+
+    fun getStoriesWithLocation(): LiveData<ResultState<StoryResponse>> =
+        liveData {
+            emit(ResultState.Loading)
+            try {
+                val sessionToken = "Bearer ${userPreference.getSession().first().token}"
+                val response = apiService.getStoriesWithLocation(sessionToken, 1)
+                emit(ResultState.Success(response))
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
+                emit(ResultState.Error(errorResponse.message.toString()))
+            }
+        }
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
@@ -105,10 +129,10 @@ class UserRepository private constructor(
         @Volatile
         private var instance: UserRepository? = null
         fun getInstance(
-            userPreference: UserPreference, apiService: ApiService
+            userPreference: UserPreference, apiService: ApiService, storyDatabase: StoryDatabase
         ): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(apiService, userPreference)
+                instance ?: UserRepository(apiService, userPreference, storyDatabase)
             }.also { instance = it }
     }
 }

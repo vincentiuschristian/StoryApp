@@ -5,6 +5,7 @@
     <color name="color1">#ffd9dc</color>
     <color name="color2">#5cd5fb</color>
     <color name="textButtonColor">#1B1919</color>
+    <color name="textMyButtonColor">#1B1919</color>
     <color name="backgroundEdt">#FFFFFF</color>
     <color name="strokeEdit">#222831</color>
     <color name="iconColor">#222831</color>

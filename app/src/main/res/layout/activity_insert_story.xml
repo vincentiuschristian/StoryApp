@@ -87,14 +87,14 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnUpload"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@android:color/transparent"
         android:text="@string/post_story"
         android:textColor="@color/textButtonColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/switch_location"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/strokeEdit"
         app:strokeWidth="1dp"
@@ -108,5 +108,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintGuide_percent="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="Use My Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

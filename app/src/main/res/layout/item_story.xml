@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/ivStory"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:contentDescription="@string/story_image"
             android:src="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"

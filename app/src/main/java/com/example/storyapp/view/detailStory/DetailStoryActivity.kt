@@ -5,26 +5,26 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.storyapp.R
-import com.example.storyapp.data.response.ListStoryItem
+import com.example.storyapp.data.paging.database.StoryEntity
 import com.example.storyapp.databinding.ActivityDetailStoryBinding
 import com.example.storyapp.util.dateFormatter
 import java.util.TimeZone
 
-@Suppress("DEPRECATION")
+
 class DetailStoryActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDetailStoryBinding
+    private val binding: ActivityDetailStoryBinding by lazy {
+        ActivityDetailStoryBinding.inflate(layoutInflater)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_story)
-
-        binding = ActivityDetailStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.title = resources.getString(R.string.detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // ubah ini deprecated code !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         val detail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(KEY_DATA, ListStoryItem::class.java)
+            intent.getParcelableExtra(KEY_DATA, StoryEntity::class.java)
         } else {
             intent.getParcelableExtra(KEY_DATA)
         }
@@ -33,6 +33,7 @@ class DetailStoryActivity : AppCompatActivity() {
             tvNameDetail.text = detail?.name
             tvDescDetail.text = detail?.description
             tvTime.text = dateFormatter(detail?.createdAt, TimeZone.getDefault().id)
+            tvLocation.text = resources.getString(R.string.location, detail?.lat.toString(), detail?.lon.toString())
             Glide.with(root.context)
                 .load(detail?.photoUrl)
                 .into(ivImage)

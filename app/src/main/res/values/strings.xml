@@ -49,4 +49,6 @@
     <string name="login_msg" translatable="false">Welcome to StoryApp\\nLet\'s Write Your Story!</string>
     <string name="insertPhotoWarning">Insert photo!</string>
     <string name="empty_story">Empty Story</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
+    <string name="location" translatable="false">Location : %1$s, %2$s</string>
 </resources>

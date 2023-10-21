@@ -20,7 +20,9 @@ import com.example.storyapp.view.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 
 class SignUpActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySignUpBinding
+    private val binding: ActivitySignUpBinding by lazy {
+        ActivitySignUpBinding.inflate(layoutInflater)
+    }
 
     private val signUpViewModel: SignUpViewModel by viewModels {
         ViewModelFactory.getInstance(applicationContext)
@@ -28,9 +30,6 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
-
-        binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupSignUp()

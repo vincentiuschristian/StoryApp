@@ -13,11 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
-import com.example.storyapp.data.ResultState
-import com.example.storyapp.data.response.ListStoryItem
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.view.adapter.StoryAdapter
 import com.example.storyapp.view.insertStory.InsertStoryActivity
+import com.example.storyapp.view.maps.MapsActivity
 import com.example.storyapp.view.setting.SettingActivity
 import com.example.storyapp.view.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
@@ -27,18 +26,19 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(applicationContext)
     }
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private lateinit var adapter: StoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val layoutManager = GridLayoutManager(this, 2)
-        binding.rvItem.layoutManager = layoutManager
-        binding.rvItem.setHasFixedSize(true)
+        adapter = StoryAdapter()
+        binding.rvItem.layoutManager = GridLayoutManager(applicationContext, 2)
+        binding.rvItem.adapter = adapter
 
         setupView()
         getSession()
@@ -80,36 +80,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getStories() {
-        viewModel.getAllStories().observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> {
-                        showLoading(true)
-                    }
-
-                    is ResultState.Success -> {
-                        showLoading(false)
-                        setData(result.data.listStory)
-                        showSnackbar(result.data.message)
-                    }
-
-                    is ResultState.Error -> {
-                        showSnackbar(result.error)
-                        showLoading(false)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setData(data: List<ListStoryItem>?) {
-        if (data.isNullOrEmpty()) {
-            binding.tvEmptyStory.visibility = View.VISIBLE
-        } else {
+        showLoading(true)
+        binding.tvEmptyStory.visibility = View.VISIBLE
+        viewModel.getAllStories.observe(this) {
+            adapter.submitData(lifecycle, it)
+            showLoading(false)
             binding.tvEmptyStory.visibility = View.GONE
-            val adapter = StoryAdapter()
-            adapter.submitList(data)
-            binding.rvItem.adapter = adapter
         }
     }
 
@@ -126,6 +102,11 @@ class MainActivity : AppCompatActivity() {
 
         R.id.menu_setting -> {
             startActivity(Intent(applicationContext, SettingActivity::class.java))
+            true
+        }
+
+        R.id.menu_maps -> {
+            startActivity(Intent(applicationContext, MapsActivity::class.java))
             true
         }
 

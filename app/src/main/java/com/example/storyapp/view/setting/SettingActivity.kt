@@ -11,11 +11,11 @@ import com.example.storyapp.R
 import com.example.storyapp.databinding.ActivitySettingBinding
 
 class SettingActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySettingBinding
+    private val binding: ActivitySettingBinding by lazy {
+        ActivitySettingBinding.inflate(layoutInflater)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
-        binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnLanguage.setOnClickListener {

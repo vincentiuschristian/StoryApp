@@ -27,13 +27,18 @@ class LoginActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(applicationContext)
     }
 
-    private lateinit var binding: ActivityLoginBinding
+    private val binding: ActivityLoginBinding by lazy {
+        ActivityLoginBinding.inflate(layoutInflater)
+    }
+
+    /*
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+    * */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupLogin()

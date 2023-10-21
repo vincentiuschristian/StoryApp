@@ -8,6 +8,7 @@ import com.example.storyapp.di.Injection
 import com.example.storyapp.view.insertStory.InsertViewModel
 import com.example.storyapp.view.login.LoginViewModel
 import com.example.storyapp.view.main.MainViewModel
+import com.example.storyapp.view.maps.MapsViewModel
 import com.example.storyapp.view.signup.SignUpViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
@@ -20,6 +21,7 @@ class ViewModelFactory(private val repository: UserRepository) :
         LoginViewModel::class.java -> LoginViewModel(repository)
         SignUpViewModel::class.java -> SignUpViewModel(repository)
         InsertViewModel::class.java -> InsertViewModel(repository)
+        MapsViewModel::class.java -> MapsViewModel(repository)
 
         else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     } as T
