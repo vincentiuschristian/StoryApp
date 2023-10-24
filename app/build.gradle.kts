@@ -35,13 +35,19 @@ android {
             )
         }
     }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+        animationsDisabled = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 }
 
@@ -83,6 +89,20 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.2.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
 
-    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation ("androidx.test:runner:1.5.2")
+    androidTestImplementation ("androidx.test:rules:1.5.0")
+
+    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0") // InstantTaskExecutorRule
     androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+
+    implementation ("androidx.test.espresso:espresso-idling-resource:3.5.1")
+    androidTestImplementation ("com.android.support.test.espresso:espresso-contrib:3.0.2")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1") //IntentsTestRule
+
+    // mock web server
+    androidTestImplementation ("com.squareup.okhttp3:mockwebserver:4.9.3")
+    androidTestImplementation ("com.squareup.okhttp3:okhttp-tls:4.9.3")
+
+    //special instrumentation testing // Integration Testing Room Database
+    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1") //TestDispatcher
 }

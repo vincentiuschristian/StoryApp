@@ -45,4 +45,10 @@
     <string name="detail">Detail Cerita</string>
     <string name="insertPhotoWarning">Masukan Foto!</string>
     <string name="empty_story">Tidak ada Cerita</string>
+    <string name="use_my_location">Posting dengan Lokasiku</string>
+    <string name="your_location">Lokasi Anda</string>
+    <string name="location_not_found">Lokasi tidak ditemukan. Coba Lagi</string>
+    <string name="next_activity">Oke</string>
+    <string name="maps">Peta</string>
+    <string name="refresh">Coba Lagi</string>
 </resources>

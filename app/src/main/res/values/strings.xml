@@ -51,4 +51,11 @@
     <string name="empty_story">Empty Story</string>
     <string name="title_activity_maps" translatable="false">MapsActivity</string>
     <string name="location" translatable="false">Location : %1$s, %2$s</string>
+    <string name="use_my_location">Post with My Location</string>
+    <string name="your_location">Your Location</string>
+    <string name="location_not_found">Location is not found. Try Again</string>
+    <string name="next_activity">Oke</string>
+    <string name="maps">Maps</string>
+    <string name="refresh">Refresh</string>
+    <string name="timeout" translatable="false">Timeout</string>
 </resources>

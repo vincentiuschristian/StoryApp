@@ -10,12 +10,14 @@
 
     <item
         android:id="@+id/menu_setting"
+        android:icon="@drawable/settings"
         android:title="@string/setting"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/menu_Logout"
         android:title="@string/logout"
-        app:showAsAction="never"/>
+        android:icon="@drawable/logout_"
+        app:showAsAction="ifRoom"/>
 
 </menu>

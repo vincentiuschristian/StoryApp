@@ -6,15 +6,15 @@ object DataDummy {
 
     fun generateDummyStoryResponse(): List<StoryEntity> {
         val items: MutableList<StoryEntity> = arrayListOf()
-        for (i in 0..25) {
+        for (i in 0..10) {
             val quote = StoryEntity(
-                i.toString(),
-                "createdAt + $i",
-                "description $i",
-                "name $i",
-                "photoUrl $i",
-                0.0F,
-                0.0F,
+                id = "id $i",
+                name = "Name $i",
+                description = "Description $i",
+                photoUrl = "https://avatars.githubusercontent.com/u/95396799?v=4",
+                createdAt = "2023-10-15T05:05:05Z",
+                lat = i.toFloat(),
+                lon = i.toFloat()
             )
             items.add(quote)
         }

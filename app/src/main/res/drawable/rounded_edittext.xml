@@ -4,8 +4,8 @@
 
     <!-- Set the background color of the EditText here -->
     <solid android:color="@color/backgroundEdt" />
-    <stroke android:color="#757575" />
-    <stroke android:width="2dp"/>
+    <stroke android:color="#D8E4DFDF" />
+    <stroke android:width="1dp"/>
 
     <!-- Set the corner radius here. Adjust the value as needed -->
     <corners android:radius="24dp" />

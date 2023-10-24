@@ -66,6 +66,7 @@ class SignUpActivity : AppCompatActivity() {
             repeatMode = ObjectAnimator.REVERSE
         }.start()
 
+        val textSignUp = ObjectAnimator.ofFloat(binding.textView, View.ALPHA, 1f).setDuration(200)
         val etName = ObjectAnimator.ofFloat(binding.textInputLayoutUsername, View.ALPHA, 1f).setDuration(200)
         val etEmail = ObjectAnimator.ofFloat(binding.textInputLayoutEmail, View.ALPHA, 1f).setDuration(200)
         val etPass = ObjectAnimator.ofFloat(binding.textInputLayoutPass, View.ALPHA, 1f).setDuration(200)
@@ -73,6 +74,7 @@ class SignUpActivity : AppCompatActivity() {
 
         AnimatorSet().apply {
             playSequentially(
+                textSignUp,
                 etName,
                 etEmail,
                 etPass,
@@ -111,7 +113,7 @@ class SignUpActivity : AppCompatActivity() {
         AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
-            setPositiveButton("OK", onPositiveClick)
+            setPositiveButton(resources.getString(R.string.next_activity), onPositiveClick)
             create()
             show()
         }

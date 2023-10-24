@@ -46,7 +46,7 @@ interface ApiService {
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
         @Part("lat") lat: Float? = null,
-        @Part("long") long: Float? = null
+        @Part("lon") long: Float? = null
     ): ErrorResponse
 
     @GET("stories")

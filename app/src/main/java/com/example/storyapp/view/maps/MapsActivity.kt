@@ -2,9 +2,10 @@ package com.example.storyapp.view.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 
@@ -46,6 +48,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        supportActionBar?.title = resources.getString(R.string.maps)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -60,6 +63,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         getMyLocation()
         addManyMarker()
+        setMapStyle()
     }
 
     private fun addManyMarker() {
@@ -106,14 +110,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         ) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
-                    showStartMarker(location)
                     mMap.isMyLocationEnabled = true
+                    showStartMarker(location)
                 } else {
-                    Toast.makeText(
-                        this@MapsActivity,
-                        "Location is not found. Try Again",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showSnackbar(getString(R.string.location_not_found))
                 }
             }
         } else {
@@ -126,6 +126,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -134,6 +141,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
                     getMyLocation()
                 }
+
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
                     getMyLocation()
                 }
@@ -145,20 +153,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(
             MarkerOptions()
                 .position(startLocation)
-                .title("Your Location")
+                .title(getString(R.string.your_location))
         )
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
     }
 
-    private fun checkPermission(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
+        }
     }
 
     private fun showSnackbar(message: String?) {
         Snackbar.make(binding.root, message!!, Snackbar.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val TAG = "MapsActivity"
     }
 
 }

@@ -1,8 +1,8 @@
 package com.example.storyapp.view.detailStory
 
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat.getParcelableExtra
 import com.bumptech.glide.Glide
 import com.example.storyapp.R
 import com.example.storyapp.data.paging.database.StoryEntity
@@ -22,12 +22,7 @@ class DetailStoryActivity : AppCompatActivity() {
         supportActionBar?.title = resources.getString(R.string.detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // ubah ini deprecated code !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        val detail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(KEY_DATA, StoryEntity::class.java)
-        } else {
-            intent.getParcelableExtra(KEY_DATA)
-        }
+        val detail = getParcelableExtra(intent, KEY_DATA, StoryEntity::class.java)
 
         binding.apply {
             tvNameDetail.text = detail?.name

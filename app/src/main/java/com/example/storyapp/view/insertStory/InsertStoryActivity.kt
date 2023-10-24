@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -29,15 +28,12 @@ import com.example.storyapp.view.main.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class InsertStoryActivity : AppCompatActivity() {
     private val binding: ActivityInsertStoryBinding by lazy {
         ActivityInsertStoryBinding.inflate(layoutInflater)
     }
     private var currentImageUri: Uri? = null
-    private var location: Location? = null
     private var latitude: Float? = null
     private var longitude: Float? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -56,14 +52,19 @@ class InsertStoryActivity : AppCompatActivity() {
         binding.btnCamera.setOnClickListener { startCamera() }
         binding.btnUpload.setOnClickListener { uploadImage() }
         binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked){
+            if (isChecked) {
                 getMyLastLocation()
+                ActivityCompat.requestPermissions(
+                    this,
+                    REQUIRED_PERMISSION,
+                    REQUEST_CODE_PERMISSIONS
+                )
             }
         }
 
         setupView()
 
-        if (!checkPermission()){
+        if (!checkPermission()) {
             ActivityCompat.requestPermissions(
                 this,
                 REQUIRED_PERMISSION,
@@ -125,33 +126,36 @@ class InsertStoryActivity : AppCompatActivity() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
             val description = binding.edtDesc.text.toString()
-            val lat = if(location != null) latitude.toString().toRequestBody("text/plain". toMediaType()) else null
-            val lon = if(location != null) longitude.toString().toRequestBody("text/plain". toMediaType()) else null
 
-            insertViewModel.uploadStory(imageFile, description, latitude, longitude).observe(this) { result ->
-                if (result != null) {
-                    when (result) {
-                        is ResultState.Loading -> {
-                            showLoading(true)
-                        }
+            insertViewModel.uploadStory(imageFile, description, latitude, longitude)
+                .observe(this) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultState.Loading -> {
+                                showLoading(true)
+                            }
 
-                        is ResultState.Success -> {
-                            showSnackbar(result.data.message.toString())
-                            showLoading(false)
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.flags =
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                        }
+                            is ResultState.Success -> {
+                                showSnackbar(result.data.message.toString())
+                                showLoading(false)
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
+                            }
 
-                        is ResultState.Error -> {
-                            showSnackbar(result.error)
-                            showLoading(false)
+                            is ResultState.Error -> {
+                                showSnackbar(result.error)
+                                showLoading(false)
+                            }
                         }
                     }
                 }
-            }
         } ?: showSnackbar(resources.getString(R.string.insertPhotoWarning))
+    }
+
+    private fun checkPermission() = REQUIRED_PERMISSION.all {
+        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
     }
 
     private val requestPermissionLauncherLocation =
@@ -160,33 +164,27 @@ class InsertStoryActivity : AppCompatActivity() {
         ) { permissions ->
             when {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                    getMyLastLocation()
+                    showSnackbar("Access Granted")
                 }
 
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                    getMyLastLocation()
+                    showSnackbar("Access Granted")
                 }
             }
         }
 
-    private fun checkPermission() = REQUIRED_PERMISSION.all {
-        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
-    }
-
     private fun getMyLastLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { locs: Location? ->
-                if (locs != null) {
-                    latitude = locs.latitude.toFloat()
-                    longitude = locs.longitude.toFloat()
-                    Log.d("InsertStory", "loc : ${location?.latitude}, ${location?.latitude}")
+            fusedLocationClient.lastLocation.addOnSuccessListener { loc: Location? ->
+                if (loc != null) {
+                    latitude = loc.latitude.toFloat()
+                    longitude = loc.longitude.toFloat()
                 } else {
-                    Toast.makeText(
-                        applicationContext,
-                        "Location is not found. Try Again",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showSnackbar(getString(R.string.location_not_found))
                 }
             }
         } else {

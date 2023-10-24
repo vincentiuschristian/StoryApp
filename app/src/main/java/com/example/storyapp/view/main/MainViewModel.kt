@@ -17,8 +17,9 @@ import kotlinx.coroutines.launch
 class MainViewModel(private val repository: UserRepository) : ViewModel() {
 
     @OptIn(ExperimentalPagingApi::class)
-    val getAllStories: LiveData<PagingData<StoryEntity>> =
-        repository.getStory().cachedIn(viewModelScope)
+    fun getAllStories(): LiveData<PagingData<StoryEntity>> {
+        return repository.getStory().cachedIn(viewModelScope)
+    }
 
 
     fun getSession(): LiveData<UserModel> {

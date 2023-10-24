@@ -7,15 +7,18 @@
     tools:context=".view.login.LoginActivity">
 
     <TextView
+        android:id="@+id/textView"
         style="@style/MaterialAlertDialog.Material3.Title.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:alpha="0"
         android:text="@string/login"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageview" />
+        app:layout_constraintTop_toBottomOf="@+id/imageview"
+        tools:alpha="100" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressIndicator"
@@ -57,10 +60,12 @@
         app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutEmail"
+        android:id="@+id/textInputLayoutEmailLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,39 +73,47 @@
         app:startIconDrawable="@drawable/mail"
         tools:alpha="100">
 
-        <com.example.storyapp.cutomview.EmailEditText
-            android:id="@+id/edtEmail"
+        <EditText
+            android:id="@+id/edtEmailLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/backgroundEdt"
             android:contentDescription="@string/input_username"
+            android:hint="@string/inputEmail"
+            android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            tools:ignore="EditableContentDescCheck,VisualLintTextFieldSize" />
+            tools:ignore="ContentDescription,EditableContentDescCheck,VisualLintTextFieldSize" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutPass"
+        android:id="@+id/textInputLayoutPassLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:alpha="0"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputLayoutEmail"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutEmailLog"
         app:startIconDrawable="@drawable/lock"
         tools:alpha="100">
 
-        <com.example.storyapp.cutomview.PasswordEditText
-            android:id="@+id/edtPassword"
+        <EditText
+            android:id="@+id/edtPasswordLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/backgroundEdt"
             android:contentDescription="@string/input_password"
             android:ems="10"
+            android:hint="@string/inputPass"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            tools:ignore="EditableContentDescCheck,VisualLintTextFieldSize" />
+            tools:ignore="ContentDescription,EditableContentDescCheck,VisualLintTextFieldSize" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +127,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPass"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassLog"
         tools:alpha="100"
         tools:ignore="VisualLintButtonSize" />
 
@@ -132,7 +145,6 @@
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
         tools:alpha="100" />
 
-
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
@@ -142,6 +154,7 @@
         android:backgroundTint="@android:color/transparent"
         android:text="@string/sign_up"
         android:textAlignment="center"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textSignUp"

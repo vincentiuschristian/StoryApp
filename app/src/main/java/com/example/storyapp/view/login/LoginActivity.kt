@@ -31,11 +31,6 @@ class LoginActivity : AppCompatActivity() {
         ActivityLoginBinding.inflate(layoutInflater)
     }
 
-    /*
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
-    }
-    * */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +61,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupLogin() {
         binding.btnLogin.setOnClickListener {
-            val email = binding.edtEmail.text.toString()
-            val pass = binding.edtPassword.text.toString()
+            val email = binding.edtEmailLogin.text.toString()
+            val pass = binding.edtPasswordLogin.text.toString()
             login(email, pass)
         }
     }
@@ -79,16 +74,19 @@ class LoginActivity : AppCompatActivity() {
             repeatMode = ObjectAnimator.REVERSE
         }.start()
 
+        val textLogin =
+            ObjectAnimator.ofFloat(binding.textView, View.ALPHA, 1f).setDuration(150)
         val etEmail =
-            ObjectAnimator.ofFloat(binding.textInputLayoutEmail, View.ALPHA, 1f).setDuration(150)
+            ObjectAnimator.ofFloat(binding.textInputLayoutEmailLog, View.ALPHA, 1f).setDuration(150)
         val etPass =
-            ObjectAnimator.ofFloat(binding.textInputLayoutPass, View.ALPHA, 1f).setDuration(150)
+            ObjectAnimator.ofFloat(binding.textInputLayoutPassLog, View.ALPHA, 1f).setDuration(150)
         val btnLogin = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(150)
         val textSignUp = ObjectAnimator.ofFloat(binding.textSignUp, View.ALPHA, 1f).setDuration(150)
         val btnSignUp = ObjectAnimator.ofFloat(binding.btnSignUp, View.ALPHA, 1f).setDuration(150)
 
         AnimatorSet().apply {
             playSequentially(
+                textLogin,
                 etEmail,
                 etPass,
                 btnLogin,
@@ -136,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
         AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
-            setPositiveButton("OK", onPositiveClick)
+            setPositiveButton(resources.getString(R.string.next_activity), onPositiveClick)
             create()
             show()
         }

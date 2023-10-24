@@ -22,6 +22,7 @@ class StoryAdapter : PagingDataAdapter<StoryEntity, StoryAdapter.MyViewHolder>(D
                 Glide.with(itemView.context)
                     .load(data.photoUrl)
                     .into(ivStory)
+                    .clearOnDetach()
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailStoryActivity::class.java)

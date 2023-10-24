@@ -18,7 +18,7 @@
 
     <ImageView
         android:id="@+id/previewImageView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_margin="8dp"
         android:contentDescription="@string/this_is_the_picture_you_will_post"
@@ -66,11 +66,13 @@
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnUpload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGallery">
+        app:layout_constraintTop_toBottomOf="@+id/switch_location">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtDesc"
@@ -89,12 +91,14 @@
         android:id="@+id/btnUpload"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@android:color/transparent"
         android:text="@string/post_story"
         android:textColor="@color/textButtonColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/switch_location"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/strokeEdit"
         app:strokeWidth="1dp"
@@ -113,10 +117,10 @@
         android:id="@+id/switch_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="Use My Location"
+        android:contentDescription="@string/use_my_location"
+        android:text="@string/use_my_location"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGallery" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,16 +10,16 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.ViewModelFactory
 import com.example.storyapp.databinding.ActivityMainBinding
+import com.example.storyapp.view.adapter.LoadingStateAdapter
 import com.example.storyapp.view.adapter.StoryAdapter
 import com.example.storyapp.view.insertStory.InsertStoryActivity
 import com.example.storyapp.view.maps.MapsActivity
 import com.example.storyapp.view.setting.SettingActivity
 import com.example.storyapp.view.welcome.WelcomeActivity
-import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels {
@@ -32,13 +32,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: StoryAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         adapter = StoryAdapter()
-        binding.rvItem.layoutManager = GridLayoutManager(applicationContext, 2)
-        binding.rvItem.adapter = adapter
+        binding.apply {
+            rvItem.layoutManager = LinearLayoutManager(applicationContext)
+            rvItem.adapter = adapter
+        }
 
         setupView()
         getSession()
@@ -53,6 +56,14 @@ class MainActivity : AppCompatActivity() {
         binding.fabAddStory.setOnClickListener {
             startActivity(Intent(applicationContext, InsertStoryActivity::class.java))
         }
+
+//        val smoothScroller = LinearSmoothScroller(applicationContext){
+//            override fun getVerticalSnapPreference(): Int {
+//                return LinearSmoothScroller.SNAP_TO_START
+//            }
+//        }
+//        smoothScroller.targetPosition = 0
+//        binding.rvItem.startSmoothScroll(smoothScroller)
 
         getStories()
     }
@@ -82,7 +93,12 @@ class MainActivity : AppCompatActivity() {
     private fun getStories() {
         showLoading(true)
         binding.tvEmptyStory.visibility = View.VISIBLE
-        viewModel.getAllStories.observe(this) {
+        binding.rvItem.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter{
+                adapter.retry()
+            }
+        )
+        viewModel.getAllStories().observe(this) {
             adapter.submitData(lifecycle, it)
             showLoading(false)
             binding.tvEmptyStory.visibility = View.GONE
@@ -111,11 +127,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun showSnackbar(message: String?) {
-        val snackBar = Snackbar.make(binding.root, message!!, Snackbar.LENGTH_SHORT)
-        snackBar.show()
     }
 
     private fun showLoading(isLoading: Boolean) {

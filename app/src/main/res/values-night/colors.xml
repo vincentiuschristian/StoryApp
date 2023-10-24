@@ -2,6 +2,7 @@
 <resources>
     <color name="backgroundEdt">#0F0F0F</color>
     <color name="iconColor">#00ADB5</color>
+    <color name="colorCardView">#0F0F0F</color>
     <color name="textButtonColor">#E4E4EA</color>
     <color name="strokeEdit">#00ADB5</color>
 </resources>

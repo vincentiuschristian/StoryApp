@@ -18,6 +18,7 @@ import com.example.storyapp.data.response.ErrorResponse
 import com.example.storyapp.data.response.LoginResponse
 import com.example.storyapp.data.response.RegisterResponse
 import com.example.storyapp.data.response.StoryResponse
+import com.example.storyapp.util.wrapEspressoIdlingResource
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -54,13 +55,15 @@ class UserRepository private constructor(
     fun loginUser(email: String, password: String): LiveData<ResultState<LoginResponse>> =
         liveData {
             emit(ResultState.Loading)
-            try {
-                val response = apiService.login(email, password)
-                emit(ResultState.Success(response))
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
-                emit(ResultState.Error(errorResponse.message.toString()))
+            wrapEspressoIdlingResource {
+                try {
+                    val response = apiService.login(email, password)
+                    emit(ResultState.Success(response))
+                } catch (e: HttpException) {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
+                    emit(ResultState.Error(errorResponse.message.toString()))
+                }
             }
         }
 
@@ -80,8 +83,6 @@ class UserRepository private constructor(
     fun uploadStory(imageFile: File, description: String, lat: Float?, long: Float?) = liveData {
         emit(ResultState.Loading)
         val requestBodyDesc = description.toRequestBody("text/plain".toMediaType())
-        val requestBodyLat = lat.toString().toRequestBody("text/plain".toMediaType())
-        val requestBodyLong = long.toString().toRequestBody("text/plain".toMediaType())
         val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
             "photo",

@@ -49,7 +49,7 @@ class StoryRemoteMediator(
             }
         }
 
-        return try {
+        try {
             val responseData =
                 apiService.getStories(sessionToken, page, state.config.pageSize).listStory
             val endOfPaginationReached = responseData.isEmpty()
@@ -75,8 +75,8 @@ class StoryRemoteMediator(
                         data.photoUrl,
                         data.description,
                         data.createdAt,
-                        data.lat.toFloat(),
-                        data.lon.toFloat()
+                        data.lat,
+                        data.lon
                     )
                     story.add(storyEntity)
                 }
@@ -84,9 +84,9 @@ class StoryRemoteMediator(
                 database.remoteKeysDao().insertAll(keys)
                 database.storyDao().insertStory(story)
             }
-            MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
-            MediatorResult.Error(exception)
+            return MediatorResult.Error(exception)
         }
     }
 
