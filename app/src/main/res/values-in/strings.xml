@@ -14,10 +14,10 @@
     <string name="register_failed">Gagal Mendaftar</string>
     <string name="FailedMsg">Gagal karena: %1$s</string>
     <string name="SuccessMsg">Selamat datang di StoryApp!</string>
-    <string name="RegisMsg">Selamat datang di StoryApp\\nAyo tulis Cerita-mu!</string>
+    <string name="RegisMsg">Selamat datang di StoryApp\nAyo tulis Cerita-mu!</string>
     <string name="login_image">Gambar Masuk</string>
     <string name="login">Masuk</string>
-    <string name="sign_up">Mendaftar</string>
+    <string name="sign_up">Daftar</string>
     <string name="register_image">Gambar Mendaftar</string>
     <string name="story_image">Gambar Cerita</string>
     <string name="this_is_the_picture_you_will_post">Ini adalah gambar yang akan kamu publis</string>
@@ -37,10 +37,10 @@
     <string name="inputEmail">Email</string>
     <string name="inputName">Nama</string>
     <string name="inputPass">Kata Sandi</string>
-    <string name="welcome_to_storyapp_nshare_your_story_here">Selamat Datang di StoryApp\\nAyo berbagi ceritamu disini!</string>
+    <string name="welcome_to_storyapp_nshare_your_story_here">Selamat Datang di StoryApp\nAyo berbagi ceritamu disini!</string>
     <string name="dateFormat">Dikirim pada %1$s</string>
     <string name="hello">Hai!</string>
-    <string name="doesn_t_have_an_account">Tidak mempunya akun?</string>
+    <string name="doesn_t_have_an_account">Tidak mempunyai akun?</string>
     <string name="story">Cerita</string>
     <string name="detail">Detail Cerita</string>
     <string name="insertPhotoWarning">Masukan Foto!</string>

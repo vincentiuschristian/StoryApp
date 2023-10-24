@@ -67,9 +67,12 @@ class SignUpActivity : AppCompatActivity() {
         }.start()
 
         val textSignUp = ObjectAnimator.ofFloat(binding.textView, View.ALPHA, 1f).setDuration(200)
-        val etName = ObjectAnimator.ofFloat(binding.textInputLayoutUsername, View.ALPHA, 1f).setDuration(200)
-        val etEmail = ObjectAnimator.ofFloat(binding.textInputLayoutEmail, View.ALPHA, 1f).setDuration(200)
-        val etPass = ObjectAnimator.ofFloat(binding.textInputLayoutPass, View.ALPHA, 1f).setDuration(200)
+        val etName =
+            ObjectAnimator.ofFloat(binding.textInputLayoutUsername, View.ALPHA, 1f).setDuration(200)
+        val etEmail =
+            ObjectAnimator.ofFloat(binding.textInputLayoutEmail, View.ALPHA, 1f).setDuration(200)
+        val etPass =
+            ObjectAnimator.ofFloat(binding.textInputLayoutPass, View.ALPHA, 1f).setDuration(200)
         val btnLogin = ObjectAnimator.ofFloat(binding.btnSignUp, View.ALPHA, 1f).setDuration(200)
 
         AnimatorSet().apply {
@@ -84,24 +87,30 @@ class SignUpActivity : AppCompatActivity() {
         }.start()
     }
 
-    private fun signUp(name: String, email: String, pass: String){
-        signUpViewModel.register(name, email, pass).observe(this){result ->
-            if (result != null){
-                when(result){
+    private fun signUp(name: String, email: String, pass: String) {
+        signUpViewModel.register(name, email, pass).observe(this) { result ->
+            if (result != null) {
+                when (result) {
                     is ResultState.Loading -> {
                         showLoading(true)
                     }
 
                     is ResultState.Success -> {
                         showSnackbar(result.data.message)
-                        showAlert(resources.getString(R.string.SuccessRegister), resources.getString(R.string.RegisMsg)){ _, _ ->
+                        showAlert(
+                            resources.getString(R.string.SuccessRegister),
+                            resources.getString(R.string.RegisMsg)
+                        ) { _, _ ->
                             navigate()
                         }
                         showLoading(false)
                     }
 
                     is ResultState.Error -> {
-                        showAlert(resources.getString(R.string.register_failed), resources.getString(R.string.FailedMsg, result.error))
+                        showAlert(
+                            resources.getString(R.string.register_failed),
+                            resources.getString(R.string.FailedMsg, result.error)
+                        )
                         showLoading(false)
                     }
                 }
@@ -109,7 +118,11 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAlert(title: String, message: String, onPositiveClick: ((dialog: DialogInterface, which: Int) -> Unit)? = null) {
+    private fun showAlert(
+        title: String,
+        message: String,
+        onPositiveClick: ((dialog: DialogInterface, which: Int) -> Unit)? = null
+    ) {
         AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
@@ -127,7 +140,7 @@ class SignUpActivity : AppCompatActivity() {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun navigate(){
+    private fun navigate() {
         startActivity(Intent(applicationContext, LoginActivity::class.java))
         finish()
     }

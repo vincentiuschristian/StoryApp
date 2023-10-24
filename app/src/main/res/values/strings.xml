@@ -58,4 +58,5 @@
     <string name="maps">Maps</string>
     <string name="refresh">Refresh</string>
     <string name="timeout" translatable="false">Timeout</string>
+    <string name="failed_map_style" translatable="false">Style parsing failed</string>
 </resources>

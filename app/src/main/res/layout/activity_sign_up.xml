@@ -21,9 +21,9 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/register_image"
         android:src="@drawable/signup_vector"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/register_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,14 +32,14 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up"
-        android:alpha="0"
-        tools:alpha="100"
-        android:textSize="36sp"
         android:layout_marginTop="8dp"
+        android:alpha="0"
+        android:text="@string/sign_up"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageview" />
+        app:layout_constraintTop_toBottomOf="@+id/imageview"
+        tools:alpha="100" />
 
     <View
         android:layout_width="0dp"
@@ -65,11 +65,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:alpha="0"
-        tools:alpha="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal"
-        app:startIconDrawable="@drawable/user">
+        app:startIconDrawable="@drawable/user"
+        tools:alpha="100">
 
         <com.example.storyapp.cutomview.NameEditText
             android:id="@+id/edtName"
@@ -78,7 +78,7 @@
             android:contentDescription="@string/input_username"
             android:inputType="text"
             android:minHeight="48dp"
-            tools:ignore="EditableContentDescCheck,DuplicateSpeakableTextCheck,VisualLintTextFieldSize" />
+            tools:ignore="EditableContentDescCheck,DuplicateSpeakableTextCheck,VisualLintTextFieldSize,TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,11 +88,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:alpha="0"
-        tools:alpha="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutUsername"
-        app:startIconDrawable="@drawable/mail">
+        app:startIconDrawable="@drawable/mail"
+        tools:alpha="100">
 
         <com.example.storyapp.cutomview.EmailEditText
             android:id="@+id/edtEmail"
@@ -101,7 +101,7 @@
             android:contentDescription="@string/input_username"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            tools:ignore="EditableContentDescCheck,VisualLintTextFieldSize" />
+            tools:ignore="EditableContentDescCheck,VisualLintTextFieldSize,TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,13 +110,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:endIconMode="password_toggle"
         android:alpha="0"
-        tools:alpha="100"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutEmail"
-        app:startIconDrawable="@drawable/lock">
+        app:startIconDrawable="@drawable/lock"
+        tools:alpha="100">
 
         <com.example.storyapp.cutomview.PasswordEditText
             android:id="@+id/edtPassword"
@@ -126,7 +126,7 @@
             android:ems="10"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            tools:ignore="EditableContentDescCheck,VisualLintTextFieldSize" />
+            tools:ignore="EditableContentDescCheck,VisualLintTextFieldSize,TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,15 +134,14 @@
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0"
-        tools:alpha="100"
         android:layout_margin="16dp"
+        android:alpha="0"
         android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPass"
+        tools:alpha="100"
         tools:ignore="VisualLintButtonSize" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

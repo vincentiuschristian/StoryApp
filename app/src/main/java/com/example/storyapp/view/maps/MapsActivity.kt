@@ -49,10 +49,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         supportActionBar?.title = resources.getString(R.string.maps)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
         mMap.uiSettings.apply {
             isZoomControlsEnabled = true
             isIndoorLevelPickerEnabled = true
@@ -163,7 +165,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val success =
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
             if (!success) {
-                Log.e(TAG, "Style parsing failed.")
+                showSnackbar(resources.getString(R.string.failed_map_style))
             }
         } catch (exception: Resources.NotFoundException) {
             Log.e(TAG, "Can't find style. Error: ", exception)

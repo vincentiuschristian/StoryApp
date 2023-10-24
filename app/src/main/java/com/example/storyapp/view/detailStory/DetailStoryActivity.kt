@@ -15,6 +15,7 @@ class DetailStoryActivity : AppCompatActivity() {
     private val binding: ActivityDetailStoryBinding by lazy {
         ActivityDetailStoryBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -28,7 +29,11 @@ class DetailStoryActivity : AppCompatActivity() {
             tvNameDetail.text = detail?.name
             tvDescDetail.text = detail?.description
             tvTime.text = dateFormatter(detail?.createdAt, TimeZone.getDefault().id)
-            tvLocation.text = resources.getString(R.string.location, detail?.lat.toString(), detail?.lon.toString())
+            tvLocation.text = resources.getString(
+                R.string.location,
+                detail?.lat.toString(),
+                detail?.lon.toString()
+            )
             Glide.with(root.context)
                 .load(detail?.photoUrl)
                 .into(ivImage)

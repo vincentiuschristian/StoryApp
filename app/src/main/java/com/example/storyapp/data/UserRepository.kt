@@ -49,6 +49,8 @@ class UserRepository private constructor(
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
             emit(ResultState.Error(errorResponse.message.toString()))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.toString()))
         }
     }
 
@@ -63,6 +65,8 @@ class UserRepository private constructor(
                     val errorBody = e.response()?.errorBody()?.string()
                     val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
                     emit(ResultState.Error(errorResponse.message.toString()))
+                } catch (e: Exception) {
+                    emit(ResultState.Error(e.toString()))
                 }
             }
         }
@@ -91,12 +95,15 @@ class UserRepository private constructor(
         )
         try {
             val sessionToken = "Bearer ${userPreference.getSession().first().token}"
-            val successResponse = apiService.uploadStory(sessionToken, multipartBody, requestBodyDesc, lat, long)
+            val successResponse =
+                apiService.uploadStory(sessionToken, multipartBody, requestBodyDesc, lat, long)
             emit(ResultState.Success(successResponse))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
             emit(ResultState.Error(errorResponse.message.toString()))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.toString()))
         }
     }
 
@@ -111,6 +118,8 @@ class UserRepository private constructor(
                 val errorBody = e.response()?.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
                 emit(ResultState.Error(errorResponse.message.toString()))
+            } catch (e: Exception) {
+                emit(ResultState.Error(e.toString()))
             }
         }
 

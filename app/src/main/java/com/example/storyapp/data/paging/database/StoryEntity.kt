@@ -32,4 +32,4 @@ data class StoryEntity(
     @field: ColumnInfo("lon")
     val lon: Float? = null
 
-): Parcelable
+) : Parcelable

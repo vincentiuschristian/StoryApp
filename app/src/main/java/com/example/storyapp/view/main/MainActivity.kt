@@ -32,19 +32,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: StoryAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         adapter = StoryAdapter()
         binding.apply {
-            rvItem.layoutManager = LinearLayoutManager(applicationContext)
             rvItem.adapter = adapter
+            rvItem.layoutManager = LinearLayoutManager(applicationContext)
         }
-
-        setupView()
-        getSession()
 
         binding.apply {
             refresh.setOnRefreshListener {
@@ -57,14 +53,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, InsertStoryActivity::class.java))
         }
 
-//        val smoothScroller = LinearSmoothScroller(applicationContext){
-//            override fun getVerticalSnapPreference(): Int {
-//                return LinearSmoothScroller.SNAP_TO_START
-//            }
-//        }
-//        smoothScroller.targetPosition = 0
-//        binding.rvItem.startSmoothScroll(smoothScroller)
-
+        setupView()
+        getSession()
         getStories()
     }
 
@@ -94,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         showLoading(true)
         binding.tvEmptyStory.visibility = View.VISIBLE
         binding.rvItem.adapter = adapter.withLoadStateFooter(
-            footer = LoadingStateAdapter{
+            footer = LoadingStateAdapter {
                 adapter.retry()
             }
         )
@@ -103,6 +93,11 @@ class MainActivity : AppCompatActivity() {
             showLoading(false)
             binding.tvEmptyStory.visibility = View.GONE
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getStories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
