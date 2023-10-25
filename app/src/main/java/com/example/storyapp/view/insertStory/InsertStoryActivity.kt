@@ -42,15 +42,18 @@ class InsertStoryActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(applicationContext)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        binding.btnGallery.setOnClickListener { startGallery() }
-        binding.btnCamera.setOnClickListener { startCamera() }
-        binding.btnUpload.setOnClickListener { uploadImage() }
+        binding.apply {
+            btnGallery.setOnClickListener { startGallery() }
+            btnCamera.setOnClickListener { startCamera() }
+            btnUpload.setOnClickListener { uploadImage() }
+        }
         binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 getMyLastLocation()

@@ -62,7 +62,7 @@ class MainViewModelTest {
 
         differ.submitData(actualStory)
 
-        Assert.assertNotNull(differ.snapshot().size)
+        Assert.assertNotNull(differ.snapshot())
         Assert.assertEquals(dummyStory.size, differ.snapshot().size)
         Assert.assertEquals(dummyStory[0], differ.snapshot()[0])
     }

@@ -17,7 +17,6 @@ import com.example.storyapp.JsonConverter
 import com.example.storyapp.R
 import com.example.storyapp.data.api.ApiConfig
 import com.example.storyapp.view.EspressoIdlingResource
-import com.example.storyapp.view.signup.SignUpActivity
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -37,7 +36,7 @@ class LoginActivityTest {
     private val resources: Resources = toContext.resources
 
     @get: Rule
-    val activity = ActivityScenarioRule(SignUpActivity::class.java)
+    val activity = ActivityScenarioRule(LoginActivity::class.java)
 
     @Before
     fun setUp(){
@@ -64,28 +63,6 @@ class LoginActivityTest {
 
         onView(withId(R.id.menu_Logout)).perform()
     }
-
-/*    @Test
-    fun signUp(){
-        onView(withId(R.id.edtName)).perform(ViewActions.click())
-        onView(withId(R.id.edtName)).perform(typeText("test12"), closeSoftKeyboard())
-
-        onView(withId(R.id.edtEmail)).perform(ViewActions.click())
-        onView(withId(R.id.edtEmail)).perform(typeText("sippsipp@gmail.com"), closeSoftKeyboard())
-
-        onView(withId(R.id.edtPassword)).perform(ViewActions.click())
-        onView(withId(R.id.edtPassword)).perform(typeText("1111111111"), closeSoftKeyboard())
-
-        val mockResponse = MockResponse()
-            .setResponseCode(200)
-            .setBody(JsonConverter.readStringFromFile("login_success_response.json"))
-        mockWebServer.enqueue(mockResponse)
-
-        onView(withId(R.id.btnSignUp)).perform(ViewActions.click())
-        onView(withText(resources.getString(R.string.next_activity))).perform(ViewActions.click())
-
-       // onView(withId(R.id.menu_Logout)).perform()
-    }*/
 
     @After
     fun tearDown(){

@@ -3,6 +3,7 @@ package com.example.storyapp.view.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,16 +14,20 @@ import com.example.storyapp.view.detailStory.DetailStoryActivity
 
 class StoryAdapter : PagingDataAdapter<StoryEntity, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
+    fun ImageView.loadImage(url: String) {
+        Glide.with(this.context)
+            .load(url)
+            .centerCrop()
+            .into(this)
+    }
+
     inner class MyViewHolder(private val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: StoryEntity) {
             binding.apply {
                 tvName.text = data.name
                 tvDesc.text = data.description
-                Glide.with(itemView.context)
-                    .load(data.photoUrl)
-                    .into(ivStory)
-                    .clearOnDetach()
+                ivStory.loadImage(url = data.photoUrl)
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailStoryActivity::class.java)
