@@ -60,8 +60,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupLogin() {
         binding.btnLogin.setOnClickListener {
-            val email = binding.edtEmailLogin.text.toString()
-            val pass = binding.edtPasswordLogin.text.toString()
+            val email = binding.edtEmailLogin.toString()
+            val pass = binding.edtPasswordLogin.toString()
             login(email, pass)
         }
     }
